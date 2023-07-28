@@ -2,6 +2,7 @@
   "name": "budget",
   "version": "0.1.0",
   "private": true,
+  "homepage":"https://pranay-24.gitlab.io/budget",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
