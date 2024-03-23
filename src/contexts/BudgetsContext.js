@@ -41,9 +41,12 @@ export const BudgetsProvider = ({ children }) => {
 //from snapshot.docs filter expense swith  a given budgetId and then map to an array of expenses objects
   async function getBudgetExpenses(budgetId) {
     try {
-      const expensesnapshot = await db.collections("expenses").get();
-      const expenses = expensesnapshot.docs
-        .filter((doc) => doc.data().budgetId === budgetId)
+    //   const expensesnapshot = await db.collections("expenses").get();
+      const expensesSnapshot = await db.collection('expenses')
+      .where('budgetId', '==', budgetId)
+      .get();
+
+      const expenses = expensesSnapshot.docs
         .map((doc) => ({ ...doc.data(), id: doc.id }));
 
       return expenses;
