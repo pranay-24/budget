@@ -55,6 +55,9 @@ return expenses.filter(expense=> expense.budgetId === budgetId)
  //add budget
 
  function addBudget({name,max}){
+    const newBudget = {id:uuidv4(), name, max}
+    db.collections('budgets').add(newBudget)
+    
 setbudgets(prevBudgets =>{
     if(prevBudgets.find(budget =>budget.name=== name)){
         return prevBudgets
