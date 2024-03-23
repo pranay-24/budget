@@ -42,6 +42,7 @@ export const BudgetsProvider = ({ children }) => {
   async function getBudgetExpenses(budgetId) {
     try {
     //   const expensesnapshot = await db.collections("expenses").get();
+    //alternate way of accessing the expenses related to a budget
       const expensesSnapshot = await db.collection('expenses')
       .where('budgetId', '==', budgetId)
       .get();
@@ -107,7 +108,9 @@ export const BudgetsProvider = ({ children }) => {
       return prevBudgets.filter((budget) => budget.id !== id);
     });
   }
-  function deleteExpense({ id }) {
+  
+  async function deleteExpense({ id }) {
+  await db.collection('expenses').doc(id).delete();
     setexpenses((prevExpenses) => {
       return prevExpenses.filter((expense) => expense.id !== id);
     });
