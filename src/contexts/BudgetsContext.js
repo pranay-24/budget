@@ -55,8 +55,9 @@ export const BudgetsProvider = ({ children }) => {
 
   //add expense
   function addExpense({ description, amount, budgetId }) {
+    
     const newExpense = { id: uuidv4(), description, amount, budgetId };
-    db.collection("expense").add(newExpense);
+    db.collection("expenses").add(newExpense);
     setexpenses((prevExpenses) => {
       return [...prevExpenses, newExpense];
     });
@@ -76,8 +77,22 @@ export const BudgetsProvider = ({ children }) => {
     });
   }
 
-  function deleteBudget({ id }) {
+  async function deleteBudget({ id }) {
     //deal with uncategorized expenses
+    await db.collection('budgets').doc(id).delete();
+
+    // Update expenses associated with the deleted budget in the "expenses" collection
+    const expensesSnapshot = await db.collection('expenses')
+      .where('budgetId', '==', id)
+      .get();
+
+    const batch = db.batch();
+    expensesSnapshot.forEach((doc) => {
+      batch.update(doc.ref, { budgetId: UNCATEGORIZED_BUDGET_ID });
+    });
+    await batch.commit();
+    
+
     setexpenses((prevExpenses) => {
       return prevExpenses.map((expense) => {
         if (expense.budgetId !== id) return expense;
