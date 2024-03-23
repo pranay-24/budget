@@ -28,7 +28,7 @@ export const BudgetsProvider = ({ children }) => {
   const [budgets, setbudgets] = useState([]);
   const [expenses, setexpenses] = useState([]);
 
-  async function get_budgets() {
+  async function getBudgets() {
     const budgetsnapshot = await db.collection("budgets").get();
     const budgetData = budgetsnapshot.docs.map((doc) => ({
       ...doc.data(),
@@ -108,7 +108,7 @@ export const BudgetsProvider = ({ children }) => {
       return prevBudgets.filter((budget) => budget.id !== id);
     });
   }
-  
+
   async function deleteExpense({ id }) {
   await db.collection('expenses').doc(id).delete();
     setexpenses((prevExpenses) => {
@@ -121,6 +121,7 @@ export const BudgetsProvider = ({ children }) => {
       value={{
         budgets,
         expenses,
+        getBudgets,
         getBudgetExpenses,
         addExpense,
         addBudget,
