@@ -49,7 +49,7 @@ export const BudgetsProvider = ({ children }) => {
 
       const expenses = expensesSnapshot.docs
         .map((doc) => ({ ...doc.data(), id: doc.id }));
-
+    setexpenses(expenses)
       return expenses;
     } catch (error) {
       console.error("Error fetching expenses");
@@ -69,10 +69,18 @@ export const BudgetsProvider = ({ children }) => {
 
   //add budget
 
-  function addBudget({ name, max }) {
-    const newBudget = { id: uuidv4(), name, max };
-    db.collections("budgets").add(newBudget);
+  async function addBudget({ name, max }) {
+    
+    //db.collection("budgets").add(newBudget);
+    const budgetsCollection = db.collection('budgets');
+    const existingBudget = await budgetsCollection.where('name', '==', name).get();
 
+    if (!existingBudget.empty) {
+      throw new Error('Budget with the same name already exists.');
+    }
+    const newBudget = { id: uuidv4(), name, max };
+    await budgetsCollection.add(newBudget);
+    
     setbudgets((prevBudgets) => {
       if (prevBudgets.find((budget) => budget.name === name)) {
         return prevBudgets;

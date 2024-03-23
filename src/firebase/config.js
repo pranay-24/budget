@@ -1,6 +1,8 @@
 // import firebase from 'firebase/app';
 // import 'firebase/firestore';
 const {initializeApp} = require('firebase/app')
+// getFireStore function levereaged from firebase/firestore library
+
 const {getFirestore} = require('firebase/firestore')
 
 const firebaseConfig = {
@@ -14,4 +16,5 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-export const db = getFirestore(app);
+ const db = getFirestore(app);
+ export {db}

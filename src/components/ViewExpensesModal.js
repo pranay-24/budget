@@ -1,5 +1,5 @@
 
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import {Modal, Stack} from 'react-bootstrap'
 import { Button} from 'react-bootstrap'
 import {currencyFormatter} from '../utils'
@@ -11,7 +11,23 @@ export default function ViewExpensesModal({budgetId, handleClose}) {
  
 
 const {getBudgetExpenses, budgets, deleteBudget, deleteExpense} = useBudgets()
-const expenses = getBudgetExpenses(budgetId)
+const [expenses, setExpenses] = useState([]);
+
+useEffect(() => {
+    const fetchExpenses = async () => {
+      try {
+        const expensesData = await getBudgetExpenses(budgetId);
+        setExpenses(expensesData);
+      } catch (error) {
+        console.error('Error fetching expenses:', error);
+        setExpenses([]);
+      }
+    };
+    if (budgetId) {
+        fetchExpenses();
+      }
+
+},[budgetId, getBudgetExpenses])
 
   const budget = ( UNCATEGORIZED_BUDGET_ID=== budgetId) ? {name:"Uncategorized" ,
   id:UNCATEGORIZED_BUDGET_ID}: budgets.find (b => b.id === budgetId)

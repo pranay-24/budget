@@ -10,10 +10,10 @@ export default function AddBudgetModal({show, handleClose}) {
 
 const {addBudget} = useBudgets()
 
-    const handleSubmit= (e)=>{
+    const handleSubmit= async (e)=>{
         e.preventDefault()
 
-        addBudget(
+        await addBudget(
         {
             name:nameRef.current.value,
             max: parseFloat(maxRef.current.value)
