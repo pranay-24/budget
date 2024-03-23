@@ -34,6 +34,8 @@ async function get_budgets(){
     ))
         setbudgets(budgetData)
 }
+
+
  // get expenses
 
  function getBudgetExpenses(budgetId){
@@ -42,9 +44,11 @@ return expenses.filter(expense=> expense.budgetId === budgetId)
 
  //add expense
  function addExpense({description, amount, budgetId}){
+    const newExpense = {id:uuidv4(), description, amount, budgetId}
+    db.collection('expense').add(newExpense)
     setexpenses(prevExpenses =>{
        
-        return [...prevExpenses, {id:uuidv4(), description, amount, budgetId}]
+        return [...prevExpenses, newExpense]
     })
  }
 
