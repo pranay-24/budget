@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import{v4 as uuidv4} from'uuid'
 import useLocalStorage from '../hooks/useLocalStorage'
-
+import {db } from '../firebase/config'
 const BudgetsContext = React.createContext()
 export const UNCATEGORIZED_BUDGET_ID = "Uncategorized"
 
@@ -26,6 +26,14 @@ export const BudgetsProvider =({children})=>{
  const [budgets,setbudgets ]= useLocalStorage("budgets",[])
  const [expenses,setexpenses] = useLocalStorage("expenses", [])
 
+
+async function get_budgets(){
+    const budgetsnapshot = await db.collection('budgets').get()
+    const budgetData = budgetsnapshot.docs.map(doc => (
+      {...doc.data(), id : doc.id}  
+    ))
+        setbudgets(budgetData)
+}
  // get expenses
 
  function getBudgetExpenses(budgetId){
