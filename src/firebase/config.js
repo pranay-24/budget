@@ -1,7 +1,7 @@
 // import firebase from 'firebase/app';
 // import 'firebase/firestore';
-const firebase = require('firebase/app')
-require('firebase/firestore')
+const {initializeApp} = require('firebase/app')
+const {getFirestore} = require('firebase/firestore')
 
 const firebaseConfig = {
     apiKey: "AIzaSyBkUWhiGV758Yt_MNO1yUSyreIKdzB_SVQ",
@@ -12,6 +12,6 @@ const firebaseConfig = {
     appId: "1:876435216813:web:340b7db1df4cd68285e924"
   };
 
-firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
-export const db = firebase.firestore();
+export const db = getFirestore(app);
